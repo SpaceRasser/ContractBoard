@@ -5,6 +5,9 @@ api-version: '1.20'
 authors: [ ContractBoard ]
 description: Contract board system for factions.
 softdepend: [ Vault ]
+libraries:
+  - com.zaxxer:HikariCP:5.1.0
+  - org.xerial:sqlite-jdbc:3.46.0.0
 commands:
   contracts:
     description: Open contracts GUI
