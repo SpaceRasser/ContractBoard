@@ -1,0 +1,6 @@
+name: ContractBoard
+version: '1.0-SNAPSHOT'
+main: org.prettyspace.contractBoard.ContractBoard
+api-version: '1.20'
+authors: [ Rasser31 and SpaceMem ]
+description: Cattling Plus for Vanilla+
