@@ -107,10 +107,14 @@ public class TemplateLoader {
                     if (!(itemObj instanceof java.util.Map<?, ?> map)) {
                         continue;
                     }
-                    String material = String.valueOf(map.getOrDefault("material", ""));
+                    Object matObj = map.get("material");
+                    String material = matObj != null ? String.valueOf(matObj) : "";
                     int amount = parseInt(map.get("amount"), 1);
                     String name = map.get("name") != null ? String.valueOf(map.get("name")) : null;
-                    List<String> lore = map.get("lore") instanceof List<?> list ? list.stream().map(String::valueOf).toList() : List.of();
+                    List<String> lore = map.get("lore") instanceof List<?> list
+                            ? list.stream().map(String::valueOf).toList()
+                            : List.of();
+
                     if (Material.matchMaterial(material) == null) {
                         logger.warning("Template " + id + " has invalid reward material: " + material);
                         continue;
