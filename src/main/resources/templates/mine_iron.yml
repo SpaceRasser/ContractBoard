@@ -1,9 +1,9 @@
 id: mine_iron
 faction: MINERS
 weight: 8
-displayName: "<gray>Mine Iron Ore</gray>"
+displayName: "<gray>Добыть железную руду</gray>"
 description:
-  - "<gray>Mine iron ore for the miners." 
+  - "<gray>Добывайте железную руду для шахтеров.</gray>"
 requirements:
   minRep: 0
 objective:

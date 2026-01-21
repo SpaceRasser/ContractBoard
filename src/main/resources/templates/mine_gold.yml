@@ -1,0 +1,20 @@
+id: mine_gold
+faction: MINERS
+weight: 6
+displayName: "<gray>Добыть золото</gray>"
+description:
+  - "<gray>Найдите золото для редких заказов.</gray>"
+requirements:
+  minRep: 100
+objective:
+  type: MINE_BLOCKS
+  target: 16
+  types:
+    - GOLD_ORE
+    - DEEPSLATE_GOLD_ORE
+rewards:
+  rep: 45
+  money: 120.0
+  items:
+    - material: GOLD_INGOT
+      amount: 6

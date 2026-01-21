@@ -1,0 +1,20 @@
+id: hunt_spider
+faction: HUNTERS
+weight: 7
+displayName: "<red>Охота на пауков</red>"
+description:
+  - "<gray>Пауки заполонили лесные тропы.</gray>"
+requirements:
+  minRep: 0
+objective:
+  type: KILL_MOBS
+  target: 14
+  types:
+    - SPIDER
+    - CAVE_SPIDER
+rewards:
+  rep: 30
+  money: 65.0
+  items:
+    - material: STRING
+      amount: 8

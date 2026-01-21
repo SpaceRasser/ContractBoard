@@ -1,0 +1,20 @@
+id: hunt_skeleton
+faction: HUNTERS
+weight: 7
+displayName: "<red>Охота на скелетов</red>"
+description:
+  - "<gray>Скелеты досаждают охотничьим тропам.</gray>"
+requirements:
+  minRep: 0
+objective:
+  type: KILL_MOBS
+  target: 10
+  types:
+    - SKELETON
+    - STRAY
+rewards:
+  rep: 35
+  money: 70.0
+  items:
+    - material: BONE
+      amount: 6

@@ -1,9 +1,9 @@
 id: fish_deliver_cod
 faction: FISHERS
 weight: 10
-displayName: "<aqua>Deliver Fresh Cod</aqua>"
+displayName: "<aqua>Сдать свежую треску</aqua>"
 description:
-  - "<gray>Bring fresh cod to the fishers." 
+  - "<gray>Принесите рыбакам свежую треску.</gray>"
 requirements:
   minRep: 0
 objective:
@@ -17,6 +17,6 @@ rewards:
   items:
     - material: COOKED_COD
       amount: 8
-      name: "<gold>Smoked Cod" 
+      name: "<gold>Копченая треска"
       lore:
-        - "<gray>Prepared by the fishers." 
+        - "<gray>Приготовлено рыбаками.</gray>"

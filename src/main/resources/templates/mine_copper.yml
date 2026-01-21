@@ -1,0 +1,20 @@
+id: mine_copper
+faction: MINERS
+weight: 8
+displayName: "<gray>Добыть медную руду</gray>"
+description:
+  - "<gray>Соберите медную руду для мастерской.</gray>"
+requirements:
+  minRep: 0
+objective:
+  type: MINE_BLOCKS
+  target: 28
+  types:
+    - COPPER_ORE
+    - DEEPSLATE_COPPER_ORE
+rewards:
+  rep: 25
+  money: 55.0
+  items:
+    - material: COPPER_INGOT
+      amount: 10

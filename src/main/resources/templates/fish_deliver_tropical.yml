@@ -1,0 +1,22 @@
+id: fish_deliver_tropical
+faction: FISHERS
+weight: 6
+displayName: "<aqua>Сдать тропическую рыбу</aqua>"
+description:
+  - "<gray>Нужны редкие тропические рыбы для стола.</gray>"
+requirements:
+  minRep: 75
+objective:
+  type: DELIVER_ITEMS
+  target: 8
+  types:
+    - TROPICAL_FISH
+rewards:
+  rep: 35
+  money: 90.0
+  items:
+    - material: TROPICAL_FISH
+      amount: 2
+      name: "<gold>Редкая добыча</gold>"
+      lore:
+        - "<gray>Рыбаки гордятся уловом.</gray>"

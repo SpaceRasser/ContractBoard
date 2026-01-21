@@ -1,0 +1,22 @@
+id: fish_deliver_pufferfish
+faction: FISHERS
+weight: 5
+displayName: "<aqua>Сдать иглобрюха</aqua>"
+description:
+  - "<gray>Опасный улов для особых заказов.</gray>"
+requirements:
+  minRep: 120
+objective:
+  type: DELIVER_ITEMS
+  target: 6
+  types:
+    - PUFFERFISH
+rewards:
+  rep: 45
+  money: 110.0
+  items:
+    - material: PUFFERFISH
+      amount: 1
+      name: "<gold>Опасная добыча</gold>"
+      lore:
+        - "<gray>Обращайтесь осторожно.</gray>"
