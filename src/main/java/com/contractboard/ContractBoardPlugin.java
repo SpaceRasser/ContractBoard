@@ -18,8 +18,16 @@ import com.contractboard.objectives.ObjectiveListener;
 import com.contractboard.objectives.PlacedBlockTracker;
 import com.contractboard.vault.EconomyHook;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 import java.util.logging.Level;
 
@@ -67,12 +75,12 @@ public class ContractBoardPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NpcListener(guiController, npcService), this);
 
         ContractsCommand contractsCommand = new ContractsCommand(guiController);
-        if (!registerCommand("contracts", contractsCommand)) {
+        if (!registerCommand("contracts", contractsCommand, "Open contracts GUI", List.of("cb"), "contractboard.use")) {
             return;
         }
 
         AdminCommand adminCommand = new AdminCommand(this, contractService, templateLoader, configService, messagesService, npcService);
-        if (!registerCommand("contractsadmin", adminCommand)) {
+        if (!registerCommand("contractsadmin", adminCommand, "ContractBoard admin commands", List.of("cba"), "contractboard.admin")) {
             return;
         }
 
@@ -83,8 +91,11 @@ public class ContractBoardPlugin extends JavaPlugin {
         getLogger().info("ContractBoard enabled.");
     }
 
-    private boolean registerCommand(String name, org.bukkit.command.CommandExecutor executor) {
+    private boolean registerCommand(String name, CommandExecutor executor, String description, List<String> aliases, String permission) {
         PluginCommand command = getCommand(name);
+        if (command == null) {
+            command = registerDynamicCommand(name, description, aliases, permission);
+        }
         if (command == null) {
             getLogger().severe("Command '" + name + "' is not registered. Check plugin.yml or paper-plugin.yml.");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -95,6 +106,41 @@ public class ContractBoardPlugin extends JavaPlugin {
             command.setTabCompleter(tabCompleter);
         }
         return true;
+    }
+
+    private PluginCommand registerDynamicCommand(String name, String description, List<String> aliases, String permission) {
+        CommandMap commandMap = resolveCommandMap();
+        if (commandMap == null) {
+            getLogger().severe("Unable to access the Bukkit CommandMap to register '" + name + "'.");
+            return null;
+        }
+        try {
+            Constructor<PluginCommand> constructor = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+            constructor.setAccessible(true);
+            PluginCommand command = constructor.newInstance(name, this);
+            command.setDescription(description);
+            command.setAliases(aliases);
+            command.setPermission(permission);
+            commandMap.register(getDescription().getName(), command);
+            getLogger().warning("Command '" + name + "' was missing from metadata; registered dynamically.");
+            return command;
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            getLogger().log(Level.SEVERE, "Failed to register command '" + name + "' dynamically.", ex);
+            return null;
+        }
+    }
+
+    private CommandMap resolveCommandMap() {
+        try {
+            Method getCommandMap = Bukkit.getServer().getClass().getMethod("getCommandMap");
+            Object result = getCommandMap.invoke(Bukkit.getServer());
+            if (result instanceof CommandMap commandMap) {
+                return commandMap;
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            getLogger().log(Level.SEVERE, "Failed to resolve Bukkit CommandMap.", ex);
+        }
+        return null;
     }
 
     @Override
