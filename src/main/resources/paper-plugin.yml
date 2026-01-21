@@ -4,6 +4,7 @@ main: com.contractboard.ContractBoardPlugin
 api-version: '1.20'
 authors: [ ContractBoard ]
 description: Contract board system for factions.
+softdepend: [ Vault ]
 commands:
   contracts:
     description: Open contracts GUI
