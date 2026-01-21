@@ -1,0 +1,19 @@
+id: hunt_creeper
+faction: HUNTERS
+weight: 5
+displayName: "<red>Охота на криперов</red>"
+description:
+  - "<gray>Криперы приближаются к поселению.</gray>"
+requirements:
+  minRep: 100
+objective:
+  type: KILL_MOBS
+  target: 8
+  types:
+    - CREEPER
+rewards:
+  rep: 50
+  money: 130.0
+  items:
+    - material: GUNPOWDER
+      amount: 6

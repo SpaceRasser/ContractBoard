@@ -1,0 +1,22 @@
+id: fish_deliver_salmon
+faction: FISHERS
+weight: 9
+displayName: "<aqua>Сдать свежего лосося</aqua>"
+description:
+  - "<gray>Рыбакам нужен лосось для припасов.</gray>"
+requirements:
+  minRep: 0
+objective:
+  type: DELIVER_ITEMS
+  target: 14
+  types:
+    - SALMON
+rewards:
+  rep: 24
+  money: 50.0
+  items:
+    - material: COOKED_SALMON
+      amount: 6
+      name: "<gold>Копченый лосось</gold>"
+      lore:
+        - "<gray>Аромат моря.</gray>"
