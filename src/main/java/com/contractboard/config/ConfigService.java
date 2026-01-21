@@ -15,6 +15,8 @@ public class ConfigService {
     private int contractsPerDay;
     private boolean generateOnJoin;
     private int maxActiveContracts;
+    private int maxClaimsPerDay;
+    private RotationMode rotationMode;
 
     private long placedBlockTtlMinutes;
     private int cleanupIntervalSeconds;
@@ -33,9 +35,11 @@ public class ConfigService {
         plugin.reloadConfig();
         String resetRaw = plugin.getConfig().getString("dailyResetTime", "05:00");
         dailyResetTime = TimeUtil.parseTime(resetRaw, plugin.getLogger());
+        rotationMode = RotationMode.fromConfig(plugin.getConfig().getString("rotationMode", "real"));
         contractsPerDay = plugin.getConfig().getInt("contractsPerDay", 3);
         generateOnJoin = plugin.getConfig().getBoolean("generateOnJoin", true);
         maxActiveContracts = plugin.getConfig().getInt("maxActiveContracts", contractsPerDay);
+        maxClaimsPerDay = plugin.getConfig().getInt("maxClaimsPerDay", 1);
 
         placedBlockTtlMinutes = plugin.getConfig().getLong("antiAbuse.placedBlockTtlMinutes", 360L);
         cleanupIntervalSeconds = plugin.getConfig().getInt("antiAbuse.cleanupIntervalSeconds", 120);
@@ -76,6 +80,14 @@ public class ConfigService {
         return maxActiveContracts;
     }
 
+    public int getMaxClaimsPerDay() {
+        return maxClaimsPerDay;
+    }
+
+    public RotationMode getRotationMode() {
+        return rotationMode;
+    }
+
     public long getPlacedBlockTtlMinutes() {
         return placedBlockTtlMinutes;
     }
@@ -94,5 +106,17 @@ public class ConfigService {
 
     public NavigableMap<Integer, String> getRankThresholds() {
         return rankThresholds;
+    }
+
+    public enum RotationMode {
+        REAL,
+        MINECRAFT;
+
+        public static RotationMode fromConfig(String value) {
+            if (value == null) {
+                return REAL;
+            }
+            return "minecraft".equalsIgnoreCase(value) ? MINECRAFT : REAL;
+        }
     }
 }

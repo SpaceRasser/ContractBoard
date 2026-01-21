@@ -8,13 +8,17 @@ public class PlayerProfile {
     private int repMiners;
     private int repHunters;
     private long lastRotationEpochDay;
+    private long lastRewardDay;
+    private int rewardsClaimedToday;
 
-    public PlayerProfile(UUID uuid, int repFishers, int repMiners, int repHunters, long lastRotationEpochDay) {
+    public PlayerProfile(UUID uuid, int repFishers, int repMiners, int repHunters, long lastRotationEpochDay, long lastRewardDay, int rewardsClaimedToday) {
         this.uuid = uuid;
         this.repFishers = repFishers;
         this.repMiners = repMiners;
         this.repHunters = repHunters;
         this.lastRotationEpochDay = lastRotationEpochDay;
+        this.lastRewardDay = lastRewardDay;
+        this.rewardsClaimedToday = rewardsClaimedToday;
     }
 
     public UUID getUuid() {
@@ -59,5 +63,25 @@ public class PlayerProfile {
 
     public void setLastRotationEpochDay(long lastRotationEpochDay) {
         this.lastRotationEpochDay = lastRotationEpochDay;
+    }
+
+    public long getLastRewardDay() {
+        return lastRewardDay;
+    }
+
+    public void setLastRewardDay(long lastRewardDay) {
+        this.lastRewardDay = lastRewardDay;
+    }
+
+    public int getRewardsClaimedToday() {
+        return rewardsClaimedToday;
+    }
+
+    public void setRewardsClaimedToday(int rewardsClaimedToday) {
+        this.rewardsClaimedToday = rewardsClaimedToday;
+    }
+
+    public void incrementRewardsClaimedToday() {
+        rewardsClaimedToday += 1;
     }
 }

@@ -69,12 +69,13 @@ public class ContractService {
     public void ensureDailyRotation(Player player) {
         ensureLoaded(player.getUniqueId()).thenRunAsync(() -> {
             PlayerProfile profile = profileCache.get(player.getUniqueId());
-            long currentDay = TimeUtil.currentEpochDay(configService.getDailyResetTime());
+            long currentDay = currentRotationKey(player);
             if (profile.getLastRotationEpochDay() == currentDay) {
                 return;
             }
-            List<ContractInstance> newContracts = generator.generate(profile, player.getUniqueId());
+            List<ContractInstance> newContracts = generator.generate(profile, player.getUniqueId(), currentDay);
             profile.setLastRotationEpochDay(currentDay);
+            resetClaimsIfNeeded(profile, currentDay);
             contractCache.put(player.getUniqueId(), newContracts);
             saveProfileAsync(profile);
             saveContractsAsync(newContracts, player.getUniqueId());
@@ -88,7 +89,7 @@ public class ContractService {
         return loading.computeIfAbsent(uuid, ignored -> CompletableFuture.runAsync(() -> {
             try {
                 PlayerProfile profile = profileDao.findByUuid(uuid)
-                    .orElseGet(() -> new PlayerProfile(uuid, 0, 0, 0, 0));
+                    .orElseGet(() -> new PlayerProfile(uuid, 0, 0, 0, 0, 0, 0));
                 List<ContractInstance> contracts = contractDao.findByPlayer(uuid);
                 profileCache.put(uuid, profile);
                 contractCache.put(uuid, new ArrayList<>(contracts));
@@ -193,6 +194,16 @@ public class ContractService {
         if (template == null) {
             return false;
         }
+        PlayerProfile profile = profileCache.get(player.getUniqueId());
+        if (profile == null) {
+            return false;
+        }
+        long currentDay = currentRotationKey(player);
+        resetClaimsIfNeeded(profile, currentDay);
+        if (profile.getRewardsClaimedToday() >= configService.getMaxClaimsPerDay()) {
+            player.sendMessage(messagesService.getMessage("messages.rewardLimitReached"));
+            return false;
+        }
         TemplateRewards rewards = template.getRewards();
         if (!rewards.getItems().isEmpty()) {
             for (ItemReward itemReward : rewards.getItems()) {
@@ -220,12 +231,10 @@ public class ContractService {
             economyHook.deposit(player, rewards.getMoney());
         }
         if (rewards.getRep() != 0) {
-            PlayerProfile profile = profileCache.get(player.getUniqueId());
-            if (profile != null) {
-                profile.addRep(template.getFaction(), rewards.getRep());
-                saveProfileAsync(profile);
-            }
+            profile.addRep(template.getFaction(), rewards.getRep());
         }
+        profile.incrementRewardsClaimedToday();
+        saveProfileAsync(profile);
         contract.setStatus(ContractStatus.REWARDED);
         contract.setUpdatedAt(System.currentTimeMillis());
         saveContractAsync(contract);
@@ -237,6 +246,8 @@ public class ContractService {
         ensureLoaded(playerUuid).thenRun(() -> {
             PlayerProfile profile = profileCache.get(playerUuid);
             profile.setLastRotationEpochDay(0);
+            profile.setLastRewardDay(0);
+            profile.setRewardsClaimedToday(0);
             saveProfileAsync(profile);
         });
     }
@@ -349,5 +360,19 @@ public class ContractService {
     private void trackSave(CompletableFuture<?> future) {
         pendingSaves.add(future);
         future.whenComplete((res, ex) -> pendingSaves.remove(future));
+    }
+
+    private long currentRotationKey(Player player) {
+        return switch (configService.getRotationMode()) {
+            case MINECRAFT -> TimeUtil.currentMinecraftDay(player.getWorld());
+            case REAL -> TimeUtil.currentEpochDay(configService.getDailyResetTime());
+        };
+    }
+
+    private void resetClaimsIfNeeded(PlayerProfile profile, long currentDay) {
+        if (profile.getLastRewardDay() != currentDay) {
+            profile.setLastRewardDay(currentDay);
+            profile.setRewardsClaimedToday(0);
+        }
     }
 }

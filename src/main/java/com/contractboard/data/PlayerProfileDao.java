@@ -19,7 +19,7 @@ public class PlayerProfileDao {
     public Optional<PlayerProfile> findByUuid(UUID uuid) throws SQLException {
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(
-                 "SELECT uuid, rep_fishers, rep_miners, rep_hunters, last_rotation_epoch_day FROM player_profiles WHERE uuid = ?")) {
+                 "SELECT uuid, rep_fishers, rep_miners, rep_hunters, last_rotation_epoch_day, last_reward_day, rewards_claimed_today FROM player_profiles WHERE uuid = ?")) {
             statement.setString(1, uuid.toString());
             try (ResultSet rs = statement.executeQuery()) {
                 if (!rs.next()) {
@@ -30,7 +30,9 @@ public class PlayerProfileDao {
                     rs.getInt("rep_fishers"),
                     rs.getInt("rep_miners"),
                     rs.getInt("rep_hunters"),
-                    rs.getLong("last_rotation_epoch_day")
+                    rs.getLong("last_rotation_epoch_day"),
+                    rs.getLong("last_reward_day"),
+                    rs.getInt("rewards_claimed_today")
                 ));
             }
         }
@@ -40,19 +42,23 @@ public class PlayerProfileDao {
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                  """
-                 INSERT INTO player_profiles(uuid, rep_fishers, rep_miners, rep_hunters, last_rotation_epoch_day)
-                 VALUES(?,?,?,?,?)
+                 INSERT INTO player_profiles(uuid, rep_fishers, rep_miners, rep_hunters, last_rotation_epoch_day, last_reward_day, rewards_claimed_today)
+                 VALUES(?,?,?,?,?,?,?)
                  ON CONFLICT(uuid) DO UPDATE SET
                  rep_fishers=excluded.rep_fishers,
                  rep_miners=excluded.rep_miners,
                  rep_hunters=excluded.rep_hunters,
-                 last_rotation_epoch_day=excluded.last_rotation_epoch_day
+                 last_rotation_epoch_day=excluded.last_rotation_epoch_day,
+                 last_reward_day=excluded.last_reward_day,
+                 rewards_claimed_today=excluded.rewards_claimed_today
                  """)) {
             statement.setString(1, profile.getUuid().toString());
             statement.setInt(2, profile.getRepFishers());
             statement.setInt(3, profile.getRepMiners());
             statement.setInt(4, profile.getRepHunters());
             statement.setLong(5, profile.getLastRotationEpochDay());
+            statement.setLong(6, profile.getLastRewardDay());
+            statement.setInt(7, profile.getRewardsClaimedToday());
             statement.executeUpdate();
         }
     }

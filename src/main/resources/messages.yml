@@ -5,3 +5,4 @@ messages:
   notEnoughItems: "<red>У вас недостаточно предметов для сдачи."
   itemsDelivered: "<yellow>Предметы сданы. Заберите награду."
   contractNotReady: "<red>Этот контракт еще не готов."
+  rewardLimitReached: "<red>Вы уже забрали награду за сегодняшний цикл контрактов."

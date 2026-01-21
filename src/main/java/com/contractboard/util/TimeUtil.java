@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.logging.Logger;
+import org.bukkit.World;
 
 public class TimeUtil {
     private TimeUtil() {
@@ -29,5 +30,10 @@ public class TimeUtil {
             date = date.minusDays(1);
         }
         return date.toEpochDay();
+    }
+
+    public static long currentMinecraftDay(World world) {
+        long fullTime = world.getFullTime();
+        return Math.floorDiv(fullTime, 24000L);
     }
 }

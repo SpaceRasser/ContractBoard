@@ -5,7 +5,6 @@ import com.contractboard.config.TemplateLoader;
 import com.contractboard.objectives.ObjectiveData;
 import com.contractboard.objectives.ObjectiveDataJson;
 import com.contractboard.objectives.ObjectiveType;
-import com.contractboard.util.TimeUtil;
 import com.contractboard.util.WeightedRandom;
 
 import java.util.ArrayList;
@@ -24,9 +23,8 @@ public class ContractGenerator {
         this.configService = configService;
     }
 
-    public List<ContractInstance> generate(PlayerProfile profile, UUID playerUuid) {
-        long epochDay = TimeUtil.currentEpochDay(configService.getDailyResetTime());
-        long seed = (playerUuid.toString() + ":" + epochDay).hashCode();
+    public List<ContractInstance> generate(PlayerProfile profile, UUID playerUuid, long rotationKey) {
+        long seed = (playerUuid.toString() + ":" + rotationKey).hashCode();
         Random random = new Random(seed);
         List<ContractInstance> results = new ArrayList<>();
         Set<String> usedTemplates = new HashSet<>();

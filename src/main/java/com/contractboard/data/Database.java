@@ -36,7 +36,9 @@ public class Database {
                     rep_fishers INTEGER NOT NULL,
                     rep_miners INTEGER NOT NULL,
                     rep_hunters INTEGER NOT NULL,
-                    last_rotation_epoch_day INTEGER NOT NULL
+                    last_rotation_epoch_day INTEGER NOT NULL,
+                    last_reward_day INTEGER NOT NULL DEFAULT 0,
+                    rewards_claimed_today INTEGER NOT NULL DEFAULT 0
                 )
                 """);
             statement.executeUpdate("""
@@ -55,8 +57,23 @@ public class Database {
                 )
                 """);
             statement.executeUpdate("CREATE INDEX IF NOT EXISTS idx_contracts_player_uuid ON player_contracts(player_uuid)");
+            ensureColumn(connection, "player_profiles", "last_reward_day", "INTEGER NOT NULL DEFAULT 0");
+            ensureColumn(connection, "player_profiles", "rewards_claimed_today", "INTEGER NOT NULL DEFAULT 0");
         } catch (SQLException ex) {
             plugin.getLogger().severe("Failed to initialize database: " + ex.getMessage());
+        }
+    }
+
+    private void ensureColumn(Connection connection, String table, String column, String definition) throws SQLException {
+        try (var rs = connection.createStatement().executeQuery("PRAGMA table_info(" + table + ")")) {
+            while (rs.next()) {
+                if (column.equalsIgnoreCase(rs.getString("name"))) {
+                    return;
+                }
+            }
+        }
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("ALTER TABLE " + table + " ADD COLUMN " + column + " " + definition);
         }
     }
 

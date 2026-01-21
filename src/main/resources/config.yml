@@ -1,7 +1,9 @@
 dailyResetTime: "05:00"
-contractsPerDay: 3
+rotationMode: "minecraft"
+contractsPerDay: 5
 generateOnJoin: true
 maxActiveContracts: 3
+maxClaimsPerDay: 1
 
 antiAbuse:
   placedBlockTtlMinutes: 360
