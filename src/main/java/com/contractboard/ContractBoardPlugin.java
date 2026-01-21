@@ -18,6 +18,7 @@ import com.contractboard.objectives.ObjectiveListener;
 import com.contractboard.objectives.PlacedBlockTracker;
 import com.contractboard.vault.EconomyHook;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -66,18 +67,34 @@ public class ContractBoardPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new NpcListener(guiController, npcService), this);
 
         ContractsCommand contractsCommand = new ContractsCommand(guiController);
-        getCommand("contracts").setExecutor(contractsCommand);
-        getCommand("contracts").setTabCompleter(contractsCommand);
+        if (!registerCommand("contracts", contractsCommand)) {
+            return;
+        }
 
         AdminCommand adminCommand = new AdminCommand(this, contractService, templateLoader, configService, messagesService, npcService);
-        getCommand("contractsadmin").setExecutor(adminCommand);
-        getCommand("contractsadmin").setTabCompleter(adminCommand);
+        if (!registerCommand("contractsadmin", adminCommand)) {
+            return;
+        }
 
         if (configService.isGenerateOnJoin()) {
             Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(contractService), this);
         }
 
         getLogger().info("ContractBoard enabled.");
+    }
+
+    private boolean registerCommand(String name, org.bukkit.command.CommandExecutor executor) {
+        PluginCommand command = getCommand(name);
+        if (command == null) {
+            getLogger().severe("Command '" + name + "' is not registered. Check plugin.yml or paper-plugin.yml.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return false;
+        }
+        command.setExecutor(executor);
+        if (executor instanceof org.bukkit.command.TabCompleter tabCompleter) {
+            command.setTabCompleter(tabCompleter);
+        }
+        return true;
     }
 
     @Override
