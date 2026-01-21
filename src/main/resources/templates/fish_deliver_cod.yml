@@ -1,0 +1,22 @@
+id: fish_deliver_cod
+faction: FISHERS
+weight: 10
+displayName: "<aqua>Deliver Fresh Cod</aqua>"
+description:
+  - "<gray>Bring fresh cod to the fishers." 
+requirements:
+  minRep: 0
+objective:
+  type: DELIVER_ITEMS
+  target: 16
+  types:
+    - COD
+rewards:
+  rep: 25
+  money: 50.0
+  items:
+    - material: COOKED_COD
+      amount: 8
+      name: "<gold>Smoked Cod" 
+      lore:
+        - "<gray>Prepared by the fishers." 

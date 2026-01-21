@@ -1,0 +1,20 @@
+id: mine_iron
+faction: MINERS
+weight: 8
+displayName: "<gray>Mine Iron Ore</gray>"
+description:
+  - "<gray>Mine iron ore for the miners." 
+requirements:
+  minRep: 0
+objective:
+  type: MINE_BLOCKS
+  target: 20
+  types:
+    - IRON_ORE
+    - DEEPSLATE_IRON_ORE
+rewards:
+  rep: 30
+  money: 60.0
+  items:
+    - material: IRON_INGOT
+      amount: 6
