@@ -100,6 +100,10 @@ public class TemplateLoader {
 
             int rep = config.getInt("rewards.rep", 0);
             Double money = config.isSet("rewards.money") ? config.getDouble("rewards.money") : null;
+            if (money == null || money <= 0) {
+                logger.warning("Template " + id + " must define rewards.money > 0");
+                continue;
+            }
             List<ItemReward> itemRewards = new ArrayList<>();
             List<?> items = config.getList("rewards.items");
             if (items != null) {

@@ -1,18 +1,20 @@
 dailyResetTime: "05:00"
-contractsPerDay: 3
+rotationMode: "minecraft"
+contractsPerDay: 5
 generateOnJoin: true
 maxActiveContracts: 3
+maxClaimsPerDay: 1
 
 antiAbuse:
   placedBlockTtlMinutes: 360
   cleanupIntervalSeconds: 120
 
 gui:
-  titleMain: "<gold>Contract Board</gold>"
-  titleFaction: "<gold>Contracts - %faction%</gold>"
+  titleMain: "<gold>Доска контрактов</gold>"
+  titleFaction: "<gold>Контракты - %faction%</gold>"
 
 ranks:
-  "0": Novice
-  "500": Adept
-  "1500": Expert
-  "4000": Master
+  "0": Новичок
+  "500": Ученик
+  "1500": Эксперт
+  "4000": Мастер

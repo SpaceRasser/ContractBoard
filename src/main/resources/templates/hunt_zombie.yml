@@ -1,9 +1,9 @@
 id: hunt_zombie
 faction: HUNTERS
 weight: 6
-displayName: "<red>Hunt Zombies</red>"
+displayName: "<red>Охота на зомби</red>"
 description:
-  - "<gray>Eliminate zombies threatening the village." 
+  - "<gray>Устраните зомби, угрожающие деревне.</gray>"
 requirements:
   minRep: 0
 objective:

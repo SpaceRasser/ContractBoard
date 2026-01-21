@@ -1,0 +1,20 @@
+id: mine_coal
+faction: MINERS
+weight: 9
+displayName: "<gray>Добыть уголь</gray>"
+description:
+  - "<gray>Пополните запасы топлива для шахтеров.</gray>"
+requirements:
+  minRep: 0
+objective:
+  type: MINE_BLOCKS
+  target: 32
+  types:
+    - COAL_ORE
+    - DEEPSLATE_COAL_ORE
+rewards:
+  rep: 20
+  money: 45.0
+  items:
+    - material: COAL
+      amount: 12

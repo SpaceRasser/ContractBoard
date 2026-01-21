@@ -1,22 +1,22 @@
 # ContractBoard
 
-Production-ready Paper plugin (1.20.6, Java 21) that adds daily faction contracts with GUI, NPCs, and rewards.
+Готовый к запуску Paper-плагин (1.20.6, Java 21), который добавляет ежедневные контракты фракций с GUI, NPC и наградами.
 
-## Features
-- Three factions: Fishers, Miners, Hunters.
-- Daily contract rotation with deterministic seed per player/day.
-- SQLite persistence with HikariCP.
-- Inventory GUI (Adventure/MiniMessage).
-- Optional Vault economy integration.
+## Возможности
+- Три фракции: Рыбаки, Шахтеры, Охотники.
+- Ротация контрактов по майнкрафтовским дням (по умолчанию) с детерминированным сидом на игрока/день.
+- Хранение данных в SQLite через HikariCP.
+- Инвентарное GUI (Adventure/MiniMessage).
+- Опциональная интеграция экономики через Vault.
 
-## Installation
-1. Build the plugin: `./gradlew build`.
-2. Copy the jar from `build/libs/` to your server `plugins/` folder.
-3. Start the server to generate config and templates.
+## Установка
+1. Соберите плагин: `./gradlew build`.
+2. Скопируйте jar из `build/libs/` в папку `plugins/` сервера.
+3. Запустите сервер, чтобы сгенерировались конфиги и шаблоны.
 
-## Commands
-- `/contracts` (alias `/cb`) — open contracts GUI.
-- `/contractsadmin` (alias `/cba`) — admin commands:
+## Команды
+- `/contracts` (алиас `/cb`) — открыть GUI контрактов.
+- `/contractsadmin` (алиас `/cba`) — админ-команды:
   - `reload`
   - `setrep <player> <faction> <value>`
   - `addrep <player> <faction> <delta>`
@@ -25,23 +25,23 @@ Production-ready Paper plugin (1.20.6, Java 21) that adds daily faction contract
   - `npc bind <faction>`
   - `debug <player>`
 
-## NPC Usage
-1. Run `/contractsadmin npc create <faction>` to spawn an NPC at your location.
-2. Or look at an existing villager and run `/contractsadmin npc bind <faction>`.
-3. Right-click the NPC to open the faction menu.
+## Использование NPC
+1. Выполните `/contractsadmin npc create <faction>`, чтобы создать NPC на вашей позиции.
+2. Или смотрите на существующего жителя и выполните `/contractsadmin npc bind <faction>`.
+3. ПКМ по NPC открывает меню фракции.
 
-## Templates
-Templates are stored in `plugins/ContractBoard/templates/*.yml`.
-Each template defines faction, objective, requirements, and rewards.
+## Шаблоны контрактов
+Шаблоны лежат в `plugins/ContractBoard/templates/*.yml`.
+Каждый шаблон задаёт фракцию, цель, требования и награды.
 
-Example:
+Пример:
 ```yaml
 id: mine_iron
 faction: MINERS
 weight: 8
-displayName: "<gray>Mine Iron Ore</gray>"
+displayName: "<gray>Добыть железную руду</gray>"
 description:
-  - "<gray>Mine iron ore for the miners."
+  - "<gray>Добывайте железную руду для шахтеров.</gray>"
 requirements:
   minRep: 0
 objective:
@@ -55,6 +55,7 @@ rewards:
   money: 60.0
 ```
 
-## Notes
-- Contracts rotate daily at `dailyResetTime` from `config.yml`.
-- Progress is tracked in real time and saved to SQLite.
+## Примечания
+- Контракты обновляются по циклу `rotationMode` из `config.yml`. Для режима `minecraft` используется игровой день, для `real` — время `dailyResetTime`.
+- По умолчанию генерируется 5 контрактов на цикл, но награду можно забрать только один раз (настраивается через `maxClaimsPerDay`).
+- Прогресс отслеживается в реальном времени и сохраняется в SQLite.
