@@ -1,0 +1,20 @@
+id: hunt_zombie
+faction: HUNTERS
+weight: 6
+displayName: "<red>Hunt Zombies</red>"
+description:
+  - "<gray>Eliminate zombies threatening the village." 
+requirements:
+  minRep: 0
+objective:
+  type: KILL_MOBS
+  target: 12
+  types:
+    - ZOMBIE
+    - HUSK
+rewards:
+  rep: 40
+  money: 75.0
+  items:
+    - material: ROTTEN_FLESH
+      amount: 4

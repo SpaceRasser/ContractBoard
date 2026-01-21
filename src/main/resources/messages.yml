@@ -1,0 +1,7 @@
+messages:
+  prefix: "<gray>[<gold>Contracts</gold>]</gray> "
+  contractCompleted: "<green>Contract completed! Visit the board to claim your reward." 
+  rewardClaimed: "<green>Reward claimed!"
+  notEnoughItems: "<red>You don't have enough items to deliver." 
+  itemsDelivered: "<yellow>Items delivered. Claim your reward." 
+  contractNotReady: "<red>This contract is not ready yet." 

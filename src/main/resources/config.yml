@@ -1,0 +1,18 @@
+dailyResetTime: "05:00"
+contractsPerDay: 3
+generateOnJoin: true
+maxActiveContracts: 3
+
+antiAbuse:
+  placedBlockTtlMinutes: 360
+  cleanupIntervalSeconds: 120
+
+gui:
+  titleMain: "<gold>Contract Board</gold>"
+  titleFaction: "<gold>Contracts - %faction%</gold>"
+
+ranks:
+  "0": Novice
+  "500": Adept
+  "1500": Expert
+  "4000": Master
